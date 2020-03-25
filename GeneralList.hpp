@@ -1,7 +1,6 @@
 #include <iostream>
 
-template <class Data>
-class List {
+template <class Data> class List {
 	private:
 		struct _list {
 			Data value;
@@ -57,6 +56,19 @@ class List {
 			return _size;
 		}
 
+		List &operator=(const List &x){
+			size = x.size;
+			Dlist *tempe;
+			front = tempe;
+			for(tempe = x.front; tempe!=nullptr; tempe = tempe -> next){
+				push_back(tempe->value);
+			}
+			back=tempe;
+			return *this;
+
+		}//overload = operator
+
+
 		void push_front(Data data) {
 			Dlist *newNode = new Dlist;
 			newNode->value = data;
@@ -109,10 +121,16 @@ class List {
 			_size -= 1;
 		}
 
-		//CONVERT THIS FUNCTION
 		void pop_back() {
-			Llist *back_to_remove = _back;
+			Dlist *back_to_remove = _back;
 
+			_back = _back -> prev;
+			if(_back == nullptr){
+				_front = nullptr;
+			} else {
+				_back -> next = nullptr;
+			}
+			/*
 			if(_front->next!=nullptr) {
 				Llist *new_back = _front;
 				while(new_back->next!=_back) {
@@ -125,6 +143,7 @@ class List {
 				_front=nullptr;
 				_back=nullptr;
 			}
+*/
 
 			delete back_to_remove;
 			_size-=1;
@@ -137,10 +156,20 @@ class List {
 
 		//Modify this
 		void print() {
-			Llist *temp;
+			Dlist *temp;
+			
 			for(temp=_front; temp!=nullptr; temp=temp->next) {
 				std::cout << temp->value << " ";
 			}
+			
 			std::cout << std::endl;
+		}
+
+		void print_back() {
+			Dlist *temp;
+			for(temp = _back; temp!=nullptr; temp=temp->prev){
+				std::cout <<temp->value<< " " ;
+			}
+			std::cout <<std::endl;
 		}
 };
